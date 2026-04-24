@@ -1,3 +1,7 @@
+
+
+https://github.com/user-attachments/assets/d942eae4-8a99-4eda-8106-42393f39cf6a
+
 # pc
 
 `pc` is a terminal matchup matrix for Pokémon Champions / VGC Regulation-M-A.
