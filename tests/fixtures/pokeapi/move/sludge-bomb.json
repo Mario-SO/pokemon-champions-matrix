@@ -1,0 +1,9 @@
+{
+  "id": 188,
+  "name": "sludge-bomb",
+  "accuracy": 100,
+  "power": 90,
+  "type": { "name": "poison" },
+  "damage_class": { "name": "special" },
+  "target": { "name": "selected-pokemon" }
+}

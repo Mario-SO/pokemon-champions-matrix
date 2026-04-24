@@ -1,0 +1,458 @@
+Floette-Mega @ Floettite
+Ability: Flower Veil
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Protect
+-  Calm Mind
+-  Dazzling Gleam
+-  Moonblast
+
+Kingambit @ Black Glasses
+Ability: Defiant
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Sucker Punch
+-  Protect
+-  Kowtow Cleave
+-  Iron Head
+
+Sneasler @ White Herb
+Ability: Unburden
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Close Combat
+-  Dire Claw
+-  Fake Out
+-  Protect
+
+Basculegion @ Choice Scarf
+Ability: Adaptability
+Nature: Jolly
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Last Respects
+-  Wave Crash
+-  Aqua Jet
+-  Flip Turn
+
+Garchomp @ Choice Scarf
+Ability: Rough Skin
+Nature: Jolly
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Earthquake
+-  Dragon Claw
+-  Rock Slide
+-  Protect
+
+Sinistcha @ Sitrus Berry
+Ability: Hospitality
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Matcha Gotcha
+-  Rage Powder
+-  Trick Room
+-  Life Dew
+
+Incineroar @ Sitrus Berry
+Ability: Intimidate
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Fake Out
+-  Parting Shot
+-  Flare Blitz
+-  Throat Chop
+
+Aerodactyl @ Focus Sash
+Ability: Unnerve
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Rock Slide
+-  Protect
+-  Dual Wingbeat
+-  Tailwind
+
+Delphox-Mega @ Delphoxite
+Ability: Blaze
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Heat Wave
+-  Protect
+-  Psychic
+-  Substitute
+
+Kommo-o @ Leftovers
+Ability: Soundproof
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Protect
+-  Clanging Scales
+-  Aura Sphere
+-  Clangorous Soul
+
+Froslass-Mega @ Froslassite
+Ability: Cursed Body
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Blizzard
+-  Protect
+-  Shadow Ball
+-  Aurora Veil
+
+Rotom-Wash @ Sitrus Berry
+Ability: Levitate
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Hydro Pump
+-  Thunderbolt
+-  Protect
+-  Volt Switch
+
+Arcanine-Hisui @ Focus Sash
+Ability: Intimidate
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Flare Blitz
+-  Rock Slide
+-  Protect
+-  Extreme Speed
+
+Palafin @ Mystic Water
+Ability: Zero to Hero
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Jet Punch
+-  Wave Crash
+-  Protect
+-  Close Combat
+
+Scizor-Mega @ Scizorite
+Ability: Technician
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Bullet Punch
+-  Protect
+-  Swords Dance
+-  Bug Bite
+
+Tyranitar-Mega @ Tyranitarite
+Ability: Sand Stream
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Rock Slide
+-  Protect
+-  Knock Off
+-  Low Kick
+
+Talonflame @ Sharp Beak
+Ability: Gale Wings
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Tailwind
+-  Protect
+-  Flare Blitz
+-  Brave Bird
+
+Charizard-Mega-Y @ Charizardite Y
+Ability: Blaze
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Protect
+-  Heat Wave
+-  Solar Beam
+-  Weather Ball
+
+Pelipper @ Focus Sash
+Ability: Drizzle
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Hurricane
+-  Weather Ball
+-  Tailwind
+-  Protect
+
+Whimsicott @ Focus Sash
+Ability: Prankster
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Tailwind
+-  Moonblast
+-  Encore
+-  Protect
+
+Corviknight @ Leftovers
+Ability: Mirror Armor
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Brave Bird
+-  Tailwind
+-  Body Press
+-  Roost
+
+Gengar-Mega @ Gengarite
+Ability: Cursed Body
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Protect
+-  Shadow Ball
+-  Perish Song
+-  Sludge Bomb
+
+Maushold @ Chople Berry
+Ability: Friend Guard
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Follow Me
+-  Protect
+-  Super Fang
+-  Taunt
+
+Farigiraf @ Sitrus Berry
+Ability: Armor Tail
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Trick Room
+-  Hyper Voice
+-  Psychic
+-  Helping Hand
+
+Aegislash @ Spell Tag
+Ability: Stance Change
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  King's Shield
+-  Iron Head
+-  Poltergeist
+-  Shadow Sneak
+
+Milotic @ Leftovers
+Ability: Competitive
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Scald
+-  Protect
+-  Ice Beam
+-  Icy Wind
+
+Gardevoir-Mega @ Gardevoirite
+Ability: Trace
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Hyper Voice
+-  Protect
+-  Psychic
+-  Trick Room
+
+Mamoswine @ Choice Scarf
+Ability: Oblivious
+Nature: Jolly
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Icicle Crash
+-  High Horsepower
+-  Earthquake
+-  Ice Shard
+
+Orthworm @ Sitrus Berry
+Ability: Earth Eater
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Body Press
+-  Shed Tail
+-  Heavy Slam
+-  Protect
+
+Primarina @ Leftovers
+Ability: Liquid Voice
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Hyper Voice
+-  Protect
+-  Moonblast
+-  Calm Mind
+
+Clefable @ Sitrus Berry
+Ability: Unaware
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Follow Me
+-  Moonblast
+-  Protect
+-  Helping Hand
+
+Volcarona @ Leftovers
+Ability: Flame Body
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Rage Powder
+-  Protect
+-  Heat Wave
+-  Quiver Dance
+
+Ninetales-Alola @ Focus Sash
+Ability: Snow Warning
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Blizzard
+-  Protect
+-  Aurora Veil
+-  Icy Wind
+
+Glimmora-Mega @ Glimmoranite
+Ability: Toxic Debris
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Power Gem
+-  Earth Power
+-  Sludge Bomb
+-  Spiky Shield
+
+Venusaur @ Focus Sash
+Ability: Chlorophyll
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Sludge Bomb
+-  Sleep Powder
+-  Protect
+-  Leaf Storm
+
+Excadrill @ Focus Sash
+Ability: Sand Rush
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Iron Head
+-  Protect
+-  High Horsepower
+-  Rock Slide
+
+Skarmory @ Skarmorite
+Ability: Sturdy
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Iron Head
+-  Protect
+-  Brave Bird
+-  Rock Slide
+
+Scovillain-Mega @ Scovillainite
+Ability: Moody
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Rage Powder
+-  Protect
+-  Leech Seed
+-  Flamethrower
+
+Kleavor @ Choice Scarf
+Ability: Sharpness
+Nature: Jolly
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Stone Axe
+-  X-Scissor
+-  U-turn
+-  Close Combat
+
+Meganium-Mega @ Meganiumite
+Ability: Overgrow
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Solar Beam
+-  Dazzling Gleam
+-  Weather Ball
+-  Protect
+
+Archaludon @ Leftovers
+Ability: Stamina
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Electro Shot
+-  Flash Cannon
+-  Protect
+-  Draco Meteor
+
+Dragonite-Mega @ Dragoninite
+Ability: Multiscale
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Protect
+-  Hurricane
+-  Draco Meteor
+-  Tailwind
+
+Tyranitar @ Choice Scarf
+Ability: Sand Stream
+Nature: Jolly
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Rock Slide
+-  Low Kick
+-  Knock Off
+-  Protect
+
+Venusaur-Mega @ Venusaurite
+Ability: Chlorophyll
+Nature: Modest
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Sludge Bomb
+-  Protect
+-  Giga Drain
+-  Leech Seed
+
+Klefki @ Mental Herb
+Ability: Prankster
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Light Screen
+-  Thunder Wave
+-  Reflect
+-  Flash Cannon
+
+Rotom-Heat @ Choice Scarf
+Ability: Levitate
+Nature: Timid
+EVs: 2 HP / 32 SpA / 32 Spe
+-  Overheat
+-  Thunderbolt
+-  Protect
+-  Volt Switch
+
+Dragapult @ Focus Sash
+Ability: Clear Body
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Dragon Darts
+-  Phantom Force
+-  Protect
+-  Shadow Ball
+
+Tsareena @ Coba Berry
+Ability: Queenly Majesty
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Trop Kick
+-  Protect
+-  Triple Axel
+-  Low Kick
+
+Kangaskhan @ Kangaskhanite
+Ability: Scrappy
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Fake Out
+-  Sucker Punch
+-  Double-Edge
+-  Drain Punch
+
+Aggron-Mega @ Aggronite
+Ability: Sturdy
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Protect
+-  Heavy Slam
+-  Body Press
+-  Iron Defense
+
+Dragonite @ Lum Berry
+Ability: Multiscale
+Nature: Adamant
+EVs: 2 HP / 32 Atk / 32 Spe
+-  Protect
+-  Extreme Speed
+-  Scale Shot
+-  Tailwind

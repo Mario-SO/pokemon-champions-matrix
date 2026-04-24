@@ -1,0 +1,9 @@
+{
+  "id": 247,
+  "name": "shadow-ball",
+  "accuracy": 100,
+  "power": 80,
+  "type": { "name": "ghost" },
+  "damage_class": { "name": "special" },
+  "target": { "name": "selected-pokemon" }
+}

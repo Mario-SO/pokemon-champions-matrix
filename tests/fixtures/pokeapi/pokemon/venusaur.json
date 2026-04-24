@@ -1,0 +1,21 @@
+{
+  "id": 3,
+  "name": "venusaur",
+  "species": { "name": "venusaur" },
+  "stats": [
+    { "base_stat": 80, "stat": { "name": "hp" } },
+    { "base_stat": 82, "stat": { "name": "attack" } },
+    { "base_stat": 83, "stat": { "name": "defense" } },
+    { "base_stat": 100, "stat": { "name": "special-attack" } },
+    { "base_stat": 100, "stat": { "name": "special-defense" } },
+    { "base_stat": 80, "stat": { "name": "speed" } }
+  ],
+  "types": [
+    { "slot": 1, "type": { "name": "grass" } },
+    { "slot": 2, "type": { "name": "poison" } }
+  ],
+  "abilities": [
+    { "ability": { "name": "overgrow" } },
+    { "ability": { "name": "chlorophyll" } }
+  ]
+}
