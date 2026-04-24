@@ -80,12 +80,6 @@ PokéAPI provides base stats, typing, move type, move category, power, and move 
 
 The TUI currently shows a terrain selector for planning context, but terrain is display-only and does not affect damage or speed calculations yet.
 
-Current stat model:
-
-```text
-1 SP = 8 EV-equivalent, IV-equivalent baseline = 31.
-```
-
 ## Development
 
 ```sh
