@@ -2,7 +2,7 @@ class Pc < Formula
   desc "Terminal matchup matrix for Pokemon Champions and VGC planning"
   homepage "https://github.com/Mario-SO/pokemon-champions-matrix"
   url "https://github.com/Mario-SO/pokemon-champions-matrix/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "REPLACE_WITH_V0_1_0_SOURCE_TARBALL_SHA256"
+  sha256 "40900a026ac403d82aca85875e812d846983e6a41237265533141ba03513ffd2"
   license "MIT"
   head "https://github.com/Mario-SO/pokemon-champions-matrix.git", branch: "main"
 
