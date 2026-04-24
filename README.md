@@ -126,7 +126,7 @@ cargo test --all-targets --all-features
 cargo build --release --locked
 ```
 
-Release builds are handled by GitHub Actions for Linux x86_64, macOS x86_64, and macOS ARM64. The Homebrew formula lives in `Formula/pc.rb`; replace its placeholder SHA with the source tarball checksum when publishing a tagged release.
+Release builds are handled by GitHub Actions for Linux and macOS. The Homebrew formula is maintained in the [`Mario-SO/homebrew-tap`](https://github.com/Mario-SO/homebrew-tap) repository.
 
 ## Attribution
 
