@@ -1,6 +1,7 @@
 use super::modifiers::Modifier;
 use super::stats::calculate_pokemon_stats;
 use crate::model::{ResolvedBattleScenario, ResolvedPokemon, Room, Status, TargetRef, Weather};
+use std::cmp::Reverse;
 
 #[derive(Debug, Clone)]
 pub(crate) struct SpeedResult {
@@ -26,7 +27,7 @@ pub(crate) fn calculate_speed_order(scenario: &ResolvedBattleScenario) -> SpeedR
     if trick_room {
         entries.sort_by_key(|entry| entry.effective_speed);
     } else {
-        entries.sort_by(|a, b| b.effective_speed.cmp(&a.effective_speed));
+        entries.sort_by_key(|entry| Reverse(entry.effective_speed));
     }
 
     for (index, entry) in entries.iter_mut().enumerate() {
