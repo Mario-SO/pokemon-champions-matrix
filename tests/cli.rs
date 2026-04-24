@@ -35,8 +35,8 @@ fn matrix_without_initialized_files_explains_first_run() {
         .arg("matrix")
         .assert()
         .failure()
-        .stderr(predicate::str::contains("Run `pc"))
-        .stderr(predicate::str::contains("init` to create sample files"));
+        .stderr(predicate::str::contains("Missing team files"))
+        .stderr(predicate::str::contains("create sample files"));
 }
 
 #[test]
