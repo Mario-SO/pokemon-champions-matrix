@@ -10,6 +10,14 @@ pub enum PcError {
         source: std::io::Error,
     },
 
+    #[error(
+        "Missing team files at {team_path} and {opponents_path}. Run `pc init` to create sample files, or pass both `--team` and `--opponents`."
+    )]
+    MissingTeamFiles {
+        team_path: String,
+        opponents_path: String,
+    },
+
     #[error("Parse error on line {line}: {message}")]
     Parse { line: usize, message: String },
 

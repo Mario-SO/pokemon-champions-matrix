@@ -1,23 +1,52 @@
-
-
-https://github.com/user-attachments/assets/d942eae4-8a99-4eda-8106-42393f39cf6a
-
 # pc
 
 `pc` is a terminal matchup matrix for Pokémon Champions / VGC Regulation-M-A.
 
-The only supported command is:
+It loads Showdown-like team text, fetches Pokémon and move metadata from [PokéAPI](https://pokeapi.co/docs/v2), and opens a keyboard-driven TUI for offensive, defensive, and speed comparisons.
+
+![pc matrix demo](https://github.com/user-attachments/assets/d942eae4-8a99-4eda-8106-42393f39cf6a)
+
+## Install
+
+The first public distribution target is a custom Homebrew tap:
+
+```sh
+brew install Mario-SO/tap/pc
+```
+
+Until the first tagged release is published, install from source:
+
+```sh
+cargo install --git https://github.com/Mario-SO/pokemon-champions-matrix pc
+```
+
+For local development:
+
+```sh
+cargo run -- matrix --team examples/my-team.txt --opponents examples/opponents.txt
+```
+
+## Quickstart
+
+Create editable sample files:
+
+```sh
+pc init
+```
+
+Then open the matrix:
 
 ```sh
 pc matrix
 ```
 
-By default it loads:
+By default, `pc matrix` reads:
 
-- `examples/my-team.txt`
-- `examples/opponents.txt`
+- `$PC_CONFIG_DIR/my-team.txt`, when `PC_CONFIG_DIR` is set.
+- `$XDG_CONFIG_HOME/pc/my-team.txt` and `$XDG_CONFIG_HOME/pc/opponents.txt`, when `XDG_CONFIG_HOME` is set.
+- `~/.config/pc/my-team.txt` and `~/.config/pc/opponents.txt` otherwise.
 
-Both files use Showdown-like team text. In this tool, `EVs:` means Pokémon Champions Stat Points.
+You can always pass explicit paths:
 
 ```sh
 pc matrix --team examples/my-team.txt --opponents examples/opponents.txt
@@ -63,27 +92,44 @@ Supported fields:
 
 - `Species @ Item`
 - `Ability:`
-- `<Nature> Nature`
+- `<Nature> Nature` or `Nature: <Nature>`
 - `Level:`
 - `EVs:` or `SPs:`
 - `Tera Type:`
 - `Tera: Yes/No`
 - `- Move`
 
-`IVs:` are rejected. Missing level defaults to `50`, missing nature defaults to `Hardy`, and missing SPs default to `0`.
+`IVs:` are rejected. In this tool, `EVs:` means Pokémon Champions Stat Points. Missing level defaults to `50`, missing nature defaults to `Hardy`, and missing SPs default to `0`.
 
-## Data
+## Data and Cache
 
-`pc matrix` fetches Pokémon and move data from [PokéAPI](https://pokeapi.co/docs/v2) while loading the TUI. There is no disk cache.
+`pc matrix` fetches Pokémon and move data from PokéAPI while loading the TUI. Raw PokéAPI responses are cached on disk:
 
-PokéAPI provides base stats, typing, move type, move category, power, and move target metadata. The local code handles Pokémon Champions SP stat math, speed modifiers, type chart, weather, screens, Tera basics, and damage rolls.
+- `$PC_CACHE_DIR/pokeapi/...`, when `PC_CACHE_DIR` is set.
+- `$XDG_CACHE_HOME/pc/pokeapi/...`, when `XDG_CACHE_HOME` is set.
+- `~/.cache/pc/pokeapi/...` otherwise.
 
-The TUI currently shows a terrain selector for planning context, but terrain is display-only and does not affect damage or speed calculations yet.
+The cache is read before network requests. Network requests use a 10 second timeout.
+
+## Limitations
+
+- Terrain is currently display-only and does not affect damage or speed calculations yet.
+- The calculator covers the local Pokémon Champions SP stat math, speed modifiers, type chart, weather, screens, Tera basics, and damage rolls implemented in this repo.
+- Data availability depends on PokéAPI names. Some Pokémon Champions-specific forms or mechanics may need local aliases or special handling.
 
 ## Development
 
 ```sh
-cargo run -- matrix
-cargo test
-cargo build
+cargo fmt --check
+cargo clippy --all-targets --all-features -- -D warnings
+cargo test --all-targets --all-features
+cargo build --release --locked
 ```
+
+Release builds are handled by GitHub Actions for Linux x86_64, macOS x86_64, and macOS ARM64. The Homebrew formula lives in `Formula/pc.rb`; replace its placeholder SHA with the source tarball checksum when publishing a tagged release.
+
+## Attribution
+
+Pokémon and related names are trademarks of Nintendo, Creatures Inc., and GAME FREAK. This project is unofficial and is not affiliated with or endorsed by those companies.
+
+Pokémon and move metadata is provided by [PokéAPI](https://pokeapi.co/).
