@@ -4,7 +4,7 @@
 
 It loads Showdown-like team text, fetches Pokémon and move metadata from [PokéAPI](https://pokeapi.co/docs/v2), and opens a keyboard-driven TUI for offensive, defensive, and speed comparisons.
 
-![pc matrix demo](https://github.com/user-attachments/assets/d942eae4-8a99-4eda-8106-42393f39cf6a)
+https://github.com/user-attachments/assets/d942eae4-8a99-4eda-8106-42393f39cf6a
 
 ## Install
 
