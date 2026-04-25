@@ -14,7 +14,7 @@ The first public distribution target is a custom Homebrew tap:
 brew install Mario-SO/tap/pc
 ```
 
-Until the first tagged release is published, install from source:
+You can also install directly from source:
 
 ```sh
 cargo install --git https://github.com/Mario-SO/pokemon-champions-matrix pc
