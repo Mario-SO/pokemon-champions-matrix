@@ -118,6 +118,7 @@ impl MatrixApp {
         let mut resolver = MatrixResolver::default();
         self.player = resolver.resolve_team(&player_sets)?;
         self.opponents = resolver.resolve_team(&opponent_sets)?;
+        sort_opponents_by_species_name(&mut self.opponents);
         self.conditions
             .resize(self.player.len(), self.opponents.len());
         self.selected_player = self
@@ -1225,6 +1226,21 @@ fn opponent_search_matches(opponents: &[MatrixPokemon], query: &str) -> Vec<usiz
         .collect()
 }
 
+fn sort_opponents_by_species_name(opponents: &mut [MatrixPokemon]) {
+    opponents.sort_by(|left, right| {
+        opponent_name_sort_key(&left.set.species)
+            .cmp(&opponent_name_sort_key(&right.set.species))
+            .then_with(|| {
+                opponent_name_sort_key(left.set.display_name())
+                    .cmp(&opponent_name_sort_key(right.set.display_name()))
+            })
+    });
+}
+
+fn opponent_name_sort_key(value: &str) -> String {
+    value.trim().to_ascii_lowercase()
+}
+
 fn search_key(value: &str) -> String {
     value
         .chars()
@@ -1235,12 +1251,57 @@ fn search_key(value: &str) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::search_key;
+    use super::{
+        MatrixPokemon, opponent_name_sort_key, search_key, sort_opponents_by_species_name,
+    };
+    use crate::model::{BaseStats, PokemonData, PokemonSet, PokemonType};
 
     #[test]
     fn search_key_ignores_spacing_and_punctuation() {
         assert_eq!(search_key("Iron Hands"), "ironhands");
         assert_eq!(search_key("iron-hands"), "ironhands");
         assert_eq!(search_key("IRON_HANDS"), "ironhands");
+    }
+
+    #[test]
+    fn opponent_name_sort_key_is_case_insensitive() {
+        assert_eq!(opponent_name_sort_key("  Iron Hands  "), "iron hands");
+    }
+
+    #[test]
+    fn sort_opponents_uses_species_name() {
+        let mut opponents = vec![
+            pokemon("Charizard", Some("Alpha")),
+            pokemon("amoonguss", None),
+            pokemon("Bulbasaur", Some("Zeta")),
+        ];
+
+        sort_opponents_by_species_name(&mut opponents);
+
+        let species = opponents
+            .iter()
+            .map(|opponent| opponent.set.species.as_str())
+            .collect::<Vec<_>>();
+        assert_eq!(species, vec!["amoonguss", "Bulbasaur", "Charizard"]);
+    }
+
+    fn pokemon(species: &str, nickname: Option<&str>) -> MatrixPokemon {
+        let mut set = PokemonSet::new(species.to_string(), None);
+        set.nickname = nickname.map(str::to_string);
+        MatrixPokemon {
+            set,
+            data: PokemonData {
+                base_stats: BaseStats {
+                    hp: 1,
+                    atk: 1,
+                    def: 1,
+                    spa: 1,
+                    spd: 1,
+                    spe: 1,
+                },
+                types: vec![PokemonType::Normal],
+            },
+            moves: Vec::new(),
+        }
     }
 }
