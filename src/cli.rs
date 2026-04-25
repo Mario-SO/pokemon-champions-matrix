@@ -1,3 +1,4 @@
+use crate::config::pc_config_dir;
 use crate::error::PcError;
 use crate::matrix;
 use clap::{Parser, Subcommand};
@@ -96,20 +97,5 @@ fn write_sample_file(path: &PathBuf, contents: &str, force: bool) -> Result<(), 
     fs::write(path, contents).map_err(|source| PcError::Io {
         path: path.display().to_string(),
         source,
-    })
-}
-
-fn pc_config_dir() -> Result<PathBuf, PcError> {
-    if let Some(value) = std::env::var_os("PC_CONFIG_DIR") {
-        return Ok(PathBuf::from(value));
-    }
-    if let Some(value) = std::env::var_os("XDG_CONFIG_HOME") {
-        return Ok(PathBuf::from(value).join("pc"));
-    }
-    if let Some(value) = std::env::var_os("HOME") {
-        return Ok(PathBuf::from(value).join(".config").join("pc"));
-    }
-    Err(PcError::Validation {
-        message: "could not determine a config directory; set PC_CONFIG_DIR".to_string(),
     })
 }

@@ -1,5 +1,7 @@
+use crate::config::pc_config_dir;
 use crate::error::PcError;
 use reqwest::blocking::Client;
+use rusqlite::{Connection, params};
 use serde::de::DeserializeOwned;
 use serde::{Deserialize, Serialize};
 use std::fs;
@@ -13,7 +15,7 @@ const REQUEST_TIMEOUT: Duration = Duration::from_secs(10);
 pub(crate) struct PokeApiClient {
     client: Client,
     base_url: String,
-    cache_dir: Option<PathBuf>,
+    cache_path: Option<PathBuf>,
 }
 
 impl Default for PokeApiClient {
@@ -25,7 +27,7 @@ impl Default for PokeApiClient {
                 .build()
                 .expect("reqwest blocking client should build"),
             base_url: DEFAULT_BASE_URL.to_string(),
-            cache_dir: pc_cache_dir().ok(),
+            cache_path: pc_config_dir().ok().map(|dir| dir.join("pc.sqlite")),
         }
     }
 }
@@ -89,7 +91,7 @@ impl PokeApiClient {
             name: requested_name.to_string(),
             message: source.to_string(),
         })?;
-        self.write_cached_json(kind, lookup_name, &body);
+        self.write_cached_json(kind, lookup_name, &body)?;
         Ok(parsed)
     }
 
@@ -98,73 +100,117 @@ impl PokeApiClient {
         kind: &'static str,
         lookup_name: &str,
     ) -> Result<Option<T>, PcError> {
-        let Some(path) = self.cache_path(kind, lookup_name) else {
+        let Some(body) = self.cached_response_json(kind, lookup_name)? else {
             return Ok(None);
         };
-        if !path.exists() {
-            return Ok(None);
-        }
-        let body = fs::read_to_string(&path).map_err(|source| PcError::Io {
-            path: path.display().to_string(),
-            source,
-        })?;
         match serde_json::from_str::<T>(&body) {
             Ok(parsed) => Ok(Some(parsed)),
             Err(_) => {
-                let _ = fs::remove_file(path);
+                self.delete_cached_json(kind, lookup_name)?;
                 Ok(None)
             }
         }
     }
 
-    fn write_cached_json(&self, kind: &'static str, lookup_name: &str, body: &str) {
-        let Some(path) = self.cache_path(kind, lookup_name) else {
-            return;
+    fn write_cached_json(
+        &self,
+        kind: &'static str,
+        lookup_name: &str,
+        body: &str,
+    ) -> Result<(), PcError> {
+        let Some(connection) = self.cache_connection()? else {
+            return Ok(());
         };
-        let Some(parent) = path.parent() else {
-            return;
+        connection
+            .execute(
+                "INSERT INTO pokeapi_cache (kind, lookup_name, response_json)
+                 VALUES (?1, ?2, ?3)
+                 ON CONFLICT(kind, lookup_name) DO UPDATE SET
+                   response_json = excluded.response_json,
+                   fetched_at = CURRENT_TIMESTAMP",
+                params![kind, lookup_name, body],
+            )
+            .map_err(|source| self.cache_error(source))?;
+        Ok(())
+    }
+
+    fn cached_response_json(
+        &self,
+        kind: &'static str,
+        lookup_name: &str,
+    ) -> Result<Option<String>, PcError> {
+        let Some(path) = self.cache_path.as_ref() else {
+            return Ok(None);
         };
-        if fs::create_dir_all(parent).is_ok() {
-            let _ = fs::write(path, body);
+        if !path.exists() {
+            return Ok(None);
+        }
+        let Some(connection) = self.cache_connection()? else {
+            return Ok(None);
+        };
+        match connection.query_row(
+            "SELECT response_json FROM pokeapi_cache WHERE kind = ?1 AND lookup_name = ?2",
+            params![kind, lookup_name],
+            |row| row.get(0),
+        ) {
+            Ok(body) => Ok(Some(body)),
+            Err(rusqlite::Error::QueryReturnedNoRows) => Ok(None),
+            Err(source) => Err(self.cache_error(source)),
         }
     }
 
-    fn cache_path(&self, kind: &'static str, lookup_name: &str) -> Option<PathBuf> {
-        self.cache_dir.as_ref().map(|dir| {
-            dir.join("pokeapi")
-                .join(kind)
-                .join(cache_file_name(lookup_name))
-        })
+    fn delete_cached_json(&self, kind: &'static str, lookup_name: &str) -> Result<(), PcError> {
+        let Some(connection) = self.cache_connection()? else {
+            return Ok(());
+        };
+        connection
+            .execute(
+                "DELETE FROM pokeapi_cache WHERE kind = ?1 AND lookup_name = ?2",
+                params![kind, lookup_name],
+            )
+            .map_err(|source| self.cache_error(source))?;
+        Ok(())
+    }
+
+    fn cache_connection(&self) -> Result<Option<Connection>, PcError> {
+        let Some(path) = self.cache_path.as_ref() else {
+            return Ok(None);
+        };
+        if let Some(parent) = path.parent() {
+            fs::create_dir_all(parent).map_err(|source| PcError::Io {
+                path: parent.display().to_string(),
+                source,
+            })?;
+        }
+        let connection = Connection::open(path).map_err(|source| self.cache_error(source))?;
+        initialize_cache(&connection).map_err(|source| self.cache_error(source))?;
+        Ok(Some(connection))
+    }
+
+    fn cache_error(&self, source: rusqlite::Error) -> PcError {
+        PcError::Cache {
+            path: self
+                .cache_path
+                .as_ref()
+                .map(|path| path.display().to_string())
+                .unwrap_or_else(|| "<disabled>".to_string()),
+            source,
+        }
     }
 }
 
-fn cache_file_name(lookup_name: &str) -> String {
-    let safe_name = lookup_name
-        .chars()
-        .map(|character| {
-            if character.is_ascii_alphanumeric() || character == '-' || character == '_' {
-                character
-            } else {
-                '-'
-            }
-        })
-        .collect::<String>();
-    format!("{safe_name}.json")
-}
-
-fn pc_cache_dir() -> Result<PathBuf, PcError> {
-    if let Some(value) = std::env::var_os("PC_CACHE_DIR") {
-        return Ok(PathBuf::from(value));
-    }
-    if let Some(value) = std::env::var_os("XDG_CACHE_HOME") {
-        return Ok(PathBuf::from(value).join("pc"));
-    }
-    if let Some(value) = std::env::var_os("HOME") {
-        return Ok(PathBuf::from(value).join(".cache").join("pc"));
-    }
-    Err(PcError::Validation {
-        message: "could not determine a cache directory; set PC_CACHE_DIR".to_string(),
-    })
+fn initialize_cache(connection: &Connection) -> Result<(), rusqlite::Error> {
+    connection.execute(
+        "CREATE TABLE IF NOT EXISTS pokeapi_cache (
+           kind TEXT NOT NULL,
+           lookup_name TEXT NOT NULL,
+           response_json TEXT NOT NULL,
+           fetched_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+           PRIMARY KEY (kind, lookup_name)
+         )",
+        [],
+    )?;
+    Ok(())
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -203,35 +249,101 @@ pub(crate) struct PokeApiMove {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::io::{Read, Write};
+    use std::net::TcpListener;
+    use std::thread;
 
     #[test]
-    fn cache_file_names_are_filesystem_safe() {
-        assert_eq!(cache_file_name("mr-mime"), "mr-mime.json");
-        assert_eq!(cache_file_name("type/null"), "type-null.json");
-    }
-
-    #[test]
-    fn reads_pokemon_from_disk_cache() {
+    fn reads_pokemon_from_sqlite_cache() {
         let cache_dir = tempfile::tempdir().unwrap();
         let client = PokeApiClient {
             client: Client::builder().timeout(REQUEST_TIMEOUT).build().unwrap(),
             base_url: "http://127.0.0.1:9".to_string(),
-            cache_dir: Some(cache_dir.path().to_path_buf()),
+            cache_path: Some(cache_dir.path().join("pc.sqlite")),
         };
-        let path = cache_dir
-            .path()
-            .join("pokeapi")
-            .join("pokemon")
-            .join("venusaur.json");
-        fs::create_dir_all(path.parent().unwrap()).unwrap();
-        fs::write(
-            &path,
-            include_str!("../../tests/fixtures/pokeapi/pokemon/venusaur.json"),
-        )
-        .unwrap();
+
+        client
+            .write_cached_json(
+                "pokemon",
+                "venusaur",
+                include_str!("../../tests/fixtures/pokeapi/pokemon/venusaur.json"),
+            )
+            .unwrap();
 
         let pokemon = client.get_pokemon("venusaur", "Venusaur").unwrap();
         assert_eq!(pokemon.stats.len(), 6);
         assert_eq!(pokemon.types.len(), 2);
+    }
+
+    #[test]
+    fn cache_miss_fetches_and_stores_response() {
+        let cache_dir = tempfile::tempdir().unwrap();
+        let cache_path = cache_dir.path().join("pc.sqlite");
+        let base_url = serve_one_response(include_str!(
+            "../../tests/fixtures/pokeapi/pokemon/venusaur.json"
+        ));
+        let fetch_client = PokeApiClient {
+            client: Client::builder().timeout(REQUEST_TIMEOUT).build().unwrap(),
+            base_url,
+            cache_path: Some(cache_path.clone()),
+        };
+
+        let fetched = fetch_client.get_pokemon("venusaur", "Venusaur").unwrap();
+        assert_eq!(fetched.stats.len(), 6);
+
+        let cached_client = PokeApiClient {
+            client: Client::builder().timeout(REQUEST_TIMEOUT).build().unwrap(),
+            base_url: "http://127.0.0.1:9".to_string(),
+            cache_path: Some(cache_path),
+        };
+        let cached = cached_client.get_pokemon("venusaur", "Venusaur").unwrap();
+        assert_eq!(cached.stats.len(), 6);
+    }
+
+    #[test]
+    fn corrupt_cached_json_is_replaced_after_fetch() {
+        let cache_dir = tempfile::tempdir().unwrap();
+        let cache_path = cache_dir.path().join("pc.sqlite");
+        let base_url = serve_one_response(include_str!(
+            "../../tests/fixtures/pokeapi/pokemon/venusaur.json"
+        ));
+        let client = PokeApiClient {
+            client: Client::builder().timeout(REQUEST_TIMEOUT).build().unwrap(),
+            base_url,
+            cache_path: Some(cache_path.clone()),
+        };
+        client
+            .write_cached_json("pokemon", "venusaur", "{not valid json")
+            .unwrap();
+
+        let pokemon = client.get_pokemon("venusaur", "Venusaur").unwrap();
+        assert_eq!(pokemon.stats.len(), 6);
+
+        let connection = Connection::open(cache_path).unwrap();
+        let body: String = connection
+            .query_row(
+                "SELECT response_json FROM pokeapi_cache WHERE kind = 'pokemon' AND lookup_name = 'venusaur'",
+                [],
+                |row| row.get(0),
+            )
+            .unwrap();
+        assert!(serde_json::from_str::<PokeApiPokemon>(&body).is_ok());
+    }
+
+    fn serve_one_response(body: &'static str) -> String {
+        let listener = TcpListener::bind("127.0.0.1:0").unwrap();
+        let address = listener.local_addr().unwrap();
+        thread::spawn(move || {
+            let (mut stream, _) = listener.accept().unwrap();
+            let mut buffer = [0; 1024];
+            let _ = stream.read(&mut buffer).unwrap();
+            let response = format!(
+                "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{}",
+                body.len(),
+                body
+            );
+            stream.write_all(response.as_bytes()).unwrap();
+        });
+        format!("http://{address}")
     }
 }

@@ -103,13 +103,13 @@ Supported fields:
 
 ## Data and Cache
 
-`pc matrix` fetches Pokémon and move data from PokéAPI while loading the TUI. Raw PokéAPI responses are cached on disk:
+`pc matrix` fetches Pokémon and move data from PokéAPI while loading the TUI. Raw PokéAPI responses are cached in a local SQLite database:
 
-- `$PC_CACHE_DIR/pokeapi/...`, when `PC_CACHE_DIR` is set.
-- `$XDG_CACHE_HOME/pc/pokeapi/...`, when `XDG_CACHE_HOME` is set.
-- `~/.cache/pc/pokeapi/...` otherwise.
+- `$PC_CONFIG_DIR/pc.sqlite`, when `PC_CONFIG_DIR` is set.
+- `$XDG_CONFIG_HOME/pc/pc.sqlite`, when `XDG_CONFIG_HOME` is set.
+- `~/.config/pc/pc.sqlite` otherwise.
 
-The cache is read before network requests. Network requests use a 10 second timeout.
+The cache is read before network requests. On a cache miss, `pc matrix` fetches from PokéAPI and stores the response for later runs. Network requests use a 10 second timeout.
 
 ## Limitations
 

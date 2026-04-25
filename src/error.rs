@@ -45,4 +45,11 @@ pub enum PcError {
 
     #[error("Could not parse PokéAPI data for {name}: {message}")]
     PokeApiData { name: String, message: String },
+
+    #[error("Could not use cache database at {path}: {source}")]
+    Cache {
+        path: String,
+        #[source]
+        source: rusqlite::Error,
+    },
 }
